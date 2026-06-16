@@ -132,38 +132,70 @@
             </div>
         </div>
     </div>
-    <script>
-        function updateData() {
-            fetch('/data')
-            .then(response => response.json())
-            .then(data => {
-                let pctLeft = Math.round((data.left / 2500) * 100);
-                let pctRight = Math.round((data.right / 2500) * 100);
-                
-                if(pctLeft > 100) pctLeft = 100; if(pctLeft < 0) pctLeft = 0;
-                if(pctRight > 100) pctRight = 100; if(pctRight < 0) pctRight = 0;
-                
-                let mainPct = Math.round(data.lin);
-                document.getElementById('ox_lin').innerText = mainPct + ' %';
-                
-                if(mainPct < 20) { 
-                    document.getElementById('ox_lin').style.color = '#ff1744'; 
-                } else { 
-                    document.getElementById('ox_lin').style.color = '#00e676'; 
-                }
-                
-                document.getElementById('ox_left').innerText = Math.round(data.left) + ' PSI';
-                document.getElementById('bar_left').style.width = pctLeft + '%';
-                document.getElementById('txt_left').innerText = 'ปริมาณก๊าซ: ' + pctLeft + '%';
-                
-                document.getElementById('ox_right').innerText = Math.round(data.right) + ' PSI';
-                document.getElementById('bar_right').style.width = pctRight + '%';
-                document.getElementById('txt_right').innerText = 'ปริมาณก๊าซ: ' + pctRight + '%';
-            })
-            .catch(err => console.error("Error fetching data:", err));
-        }
-        setInterval(updateData, 1000);
-        window.onload = updateData;
-    </script>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+    getDatabase,
+    ref,
+    onValue
+}
+from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCXKDEy7yerpQCXCocflg9LWjx5dOpCqWw",
+    authDomain: "oxegen-monitor.firebaseapp.com",
+    databaseURL: "https://oxegen-monitor-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "oxegen-monitor",
+    storageBucket: "oxegen-monitor.firebasestorage.app",
+    messagingSenderId: "1073586521044",
+    appId: "1:1073586521044:web:f2a42d7d7468cb3ea3cc41"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+onValue(ref(db, "data"), (snapshot) => {
+
+    const data = snapshot.val();
+
+    if (!data) return;
+
+    let pctLeft = Math.round((data.left / 2500) * 100);
+    let pctRight = Math.round((data.right / 2500) * 100);
+
+    pctLeft = Math.max(0, Math.min(100, pctLeft));
+    pctRight = Math.max(0, Math.min(100, pctRight));
+
+    let mainPct = Math.round(data.lin);
+
+    document.getElementById('ox_lin').innerText =
+        mainPct + ' %';
+
+    document.getElementById('ox_lin').style.color =
+        mainPct < 20 ? '#ff1744' : '#00e676';
+
+    document.getElementById('ox_left').innerText =
+        Math.round(data.left) + ' PSI';
+
+    document.getElementById('bar_left').style.width =
+        pctLeft + '%';
+
+    document.getElementById('txt_left').innerText =
+        'ปริมาณก๊าซ: ' + pctLeft + '%';
+
+    document.getElementById('ox_right').innerText =
+        Math.round(data.right) + ' PSI';
+
+    document.getElementById('bar_right').style.width =
+        pctRight + '%';
+
+    document.getElementById('txt_right').innerText =
+        'ปริมาณก๊าซ: ' + pctRight + '%';
+});
+
+</script>
 </body>
 </html>
