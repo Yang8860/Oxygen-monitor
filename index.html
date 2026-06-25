@@ -7,7 +7,7 @@
     <style>
         body { 
             font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            /* พื้นหลังแบบไล่เฉดสีฟ้า-น้ำเงินเข้ม สไตล์ iOS วอลเปเปอร์ */
+            /* พื้นหลังไล่เฉดสีฟ้า-น้ำเงินเข้ม สไตล์ iOS Wallpaper */
             background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0369a1 100%); 
             text-align: center; 
             margin: 0; 
@@ -164,14 +164,18 @@ onValue(ref(db, "data"), (snapshot) => {
 
     if (!data) return;
 
-    // แก้ไขจุดนี้: เปลี่ยนจาก data.lin เป็น data.left ตามโครงสร้างใหม่ของ ESP32
+    /* เปลี่ยนจาก data.lin เป็น data.left เรียบร้อยแล้ว 
+       เพื่อให้สอดคล้องกับข้อมูลที่ส่งมาจากบอร์ด ESP32 ตัวใหม่
+    */
     let currentPSI = Math.round(data.left);
 
     document.getElementById('ox_val').innerText = currentPSI + ' PSI';
 
     const statusElement = document.getElementById('status_text');
 
-    // ปรับเงื่อนไขตรวจสอบตามค่าแรงดันซ้าย (Left Bank) เกณฑ์ต่ำกว่า 1000 PSI ตามโค้ด ESP32
+    /* ปรับเกณฑ์การแจ้งเตือนเตือนตามค่าแรงดันซ้าย (Left Bank) 
+       โดยอิงเกณฑ์แรงดันต่ำที่ 1000 PSI ตามเงื่อนไขในโค้ด ESP32 ตัวใหม่
+    */
     if (currentPSI < 1000) {
         statusElement.innerText = "สถานะ: แรงดันต่ำกว่าเกณฑ์ ⚠️";
         statusElement.style.color = "#ff6b6b"; 
