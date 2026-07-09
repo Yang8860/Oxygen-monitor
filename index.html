@@ -169,8 +169,8 @@ onValue(ref(db, "data"), (snapshot) => {
     pctLeft = Math.max(0, Math.min(100, pctLeft));
     pctRight = Math.max(0, Math.min(100, pctRight));
 
-    // ตรวจสอบเงื่อนไขแรงดัน (ถ้าฝั่งใดฝั่งนึงหรือทั้งคู่ >= 1300 ให้เป็นปกติ แต่ถ้าต่ำกว่า 1300 ทั้งสองฝั่งให้เป็นผิดปกติ)
-    if (data.left >= 1300 || data.right >= 1300) {
+    // ต้อง >= 1300 ทั้งสองฝั่ง ถึงจะเป็นปกติ
+    if (data.left >= 1300 && data.right >= 1300) {
         document.getElementById('ox_lin').innerText = 'ปกติ';
         document.getElementById('ox_lin').style.color = '#00e676'; // สีเขียว
     } else {
