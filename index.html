@@ -114,7 +114,7 @@
         <h2>ห้องระบบสำรองก๊าซออกซิเจนทางการแพทย์ อาคารสมเด็จย่า</h2>
         <div class="subtitle">ระบบมอนิเตอร์ค่าแรงดันออกซิเจน ซ้าย-ขวา</div>
         <div class="main-line-card">
-            <div style="font-size: 13px; letter-spacing: 1.5px; opacity: 0.8;">OXYGEN TOTAL CAPACITY</div>
+            <div style="font-size: 13px; letter-spacing: 1.5px; opacity: 0.8;">OXYGEN TOTAL STATUS</div>
             <div class="main-line-val" id="ox_lin">...</div>
         </div>
         <div class="grid">
@@ -169,13 +169,14 @@ onValue(ref(db, "data"), (snapshot) => {
     pctLeft = Math.max(0, Math.min(100, pctLeft));
     pctRight = Math.max(0, Math.min(100, pctRight));
 
-    let mainPct = Math.round(data.lin);
-
-    document.getElementById('ox_lin').innerText =
-        mainPct + ' %';
-
-    document.getElementById('ox_lin').style.color =
-        mainPct < 20 ? '#ff1744' : '#00e676';
+    // ตรวจสอบเงื่อนไขแรงดัน (ถ้าฝั่งใดฝั่งนึงหรือทั้งคู่ >= 1300 ให้เป็นปกติ แต่ถ้าต่ำกว่า 1300 ทั้งสองฝั่งให้เป็นผิดปกติ)
+    if (data.left >= 1300 || data.right >= 1300) {
+        document.getElementById('ox_lin').innerText = 'ปกติ';
+        document.getElementById('ox_lin').style.color = '#00e676'; // สีเขียว
+    } else {
+        document.getElementById('ox_lin').innerText = 'ผิดปกติ';
+        document.getElementById('ox_lin').style.color = '#ff1744'; // สีแดง
+    }
 
     document.getElementById('ox_left').innerText =
         Math.round(data.left) + ' PSI';
