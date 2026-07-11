@@ -5,9 +5,25 @@
     <title>Oxygen Manifold Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        :root {
+            --body-bg: #121824;      
+            --container-bg: #1a2333; 
+            --toggle-btn-bg: #243147;
+            --toggle-btn-text: #ffffff;
+            --toggle-btn-border: #334563;
+        }
+
+        [data-theme="light"] {
+            --body-bg: #f0f4f8;      
+            --container-bg: #ffffff; 
+            --toggle-btn-bg: #ffffff;
+            --toggle-btn-text: #1a73e8;
+            --toggle-btn-border: #cddce8;
+        }
+
         body { 
+            background-color: var(--body-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #f0f2f5; 
             text-align: center; 
             margin: 0; 
             padding: 30px 10px; 
@@ -15,15 +31,41 @@
             justify-content: center; 
             align-items: center; 
             min-height: 90vh; 
+            transition: background-color 0.3s ease;
         }
+
         .container { 
             width: 100%; 
             max-width: 750px; 
-            background: white; 
+            background: var(--container-bg); 
             padding: 35px 25px; 
             border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+            position: relative;
+            transition: background-color 0.3s ease;
         }
+
+        .theme-toggle-container {
+            position: absolute;
+            top: -50px;
+            right: 0;
+        }
+        .theme-toggle-btn {
+            background: var(--toggle-btn-bg);
+            color: var(--toggle-btn-text);
+            border: 1px solid var(--toggle-btn-border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
         h2 { 
             color: #1a73e8; 
             margin-top: 0; 
@@ -111,6 +153,12 @@
 </head>
 <body>
     <div class="container">
+        <div class="theme-toggle-container">
+            <button class="theme-toggle-btn" id="themeBtn">
+                <span id="themeIcon">☀️</span> <span id="themeTxt">โหมดสว่าง</span>
+            </button>
+        </div>
+
         <h2>ห้องระบบสำรองก๊าซออกซิเจนทางการแพทย์ อาคารสมเด็จย่า</h2>
         <div class="subtitle">ระบบมอนิเตอร์ค่าแรงดันออกซิเจน ซ้าย-ขวา</div>
         <div class="main-line-card">
@@ -132,6 +180,7 @@
             </div>
         </div>
     </div>
+
 <script type="module">
 
 import { initializeApp }
@@ -157,6 +206,23 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+const themeBtn = document.getElementById('themeBtn');
+const themeIcon = document.getElementById('themeIcon');
+const themeTxt = document.getElementById('themeTxt');
+
+themeBtn.addEventListener('click', () => {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    if (isLight) {
+        document.documentElement.removeAttribute('data-theme');
+        themeIcon.innerText = '☀️';
+        themeTxt.innerText = 'โหมดสว่าง';
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        themeIcon.innerText = '🌙';
+        themeTxt.innerText = 'โหมดมืด';
+    }
+});
+
 onValue(ref(db, "data"), (snapshot) => {
 
     const data = snapshot.val();
@@ -169,13 +235,12 @@ onValue(ref(db, "data"), (snapshot) => {
     pctLeft = Math.max(0, Math.min(100, pctLeft));
     pctRight = Math.max(0, Math.min(100, pctRight));
 
-    // ต้อง >= 1300 ทั้งสองฝั่ง ถึงจะเป็นปกติ
     if (data.left >= 1300 && data.right >= 1300) {
         document.getElementById('ox_lin').innerText = 'ปกติ';
-        document.getElementById('ox_lin').style.color = '#00e676'; // สีเขียว
+        document.getElementById('ox_lin').style.color = '#00e676'; 
     } else {
         document.getElementById('ox_lin').innerText = 'ผิดปกติ';
-        document.getElementById('ox_lin').style.color = '#ff1744'; // สีแดง
+        document.getElementById('ox_lin').style.color = '#ff1744'; 
     }
 
     document.getElementById('ox_left').innerText =
