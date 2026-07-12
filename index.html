@@ -24,32 +24,27 @@
         body { 
             background-color: var(--body-bg);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            text-align: center; 
             margin: 0; 
-            padding: 30px 10px; 
+            padding: 20px 10px; 
             display: flex; 
+            flex-direction: column; /* ปรับให้เรียงจากบนลงล่าง */
             justify-content: center; 
             align-items: center; 
-            min-height: 90vh; 
+            min-height: 95vh; 
             transition: background-color 0.3s ease;
         }
 
-        .container { 
-            width: 100%; 
-            max-width: 750px; 
-            background: var(--container-bg); 
-            padding: 35px 25px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
-            position: relative;
-            transition: background-color 0.3s ease;
-        }
-
+        /* แก้ไขจุดนี้: ปรับปุ่มให้อยู่ด้านนอกกล่อง ชิดขวา และไม่ลอย */
         .theme-toggle-container {
-            position: absolute;
-            top: -50px;
-            right: 0;
+            width: 100%;
+            max-width: 750px;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            padding: 0 5px;
         }
+        
         .theme-toggle-btn {
             background: var(--toggle-btn-bg);
             color: var(--toggle-btn-text);
@@ -64,6 +59,18 @@
             gap: 6px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 750px; 
+            background: var(--container-bg); 
+            padding: 35px 25px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); 
+            box-sizing: border-box;
+            text-align: center;
+            transition: background-color 0.3s ease;
         }
 
         h2 { 
@@ -152,13 +159,14 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="theme-toggle-container">
-            <button class="theme-toggle-btn" id="themeBtn">
-                <span id="themeIcon">☀️</span> <span id="themeTxt">โหมดสว่าง</span>
-            </button>
-        </div>
 
+    <div class="theme-toggle-container">
+        <button class="theme-toggle-btn" id="themeBtn">
+            <span id="themeIcon">☀️</span> <span id="themeTxt">โหมดสว่าง</span>
+        </button>
+    </div>
+
+    <div class="container">
         <h2>ห้องระบบสำรองก๊าซออกซิเจนทางการแพทย์ อาคารสมเด็จย่า</h2>
         <div class="subtitle">ระบบมอนิเตอร์ค่าแรงดันออกซิเจน ซ้าย-ขวา</div>
         <div class="main-line-card">
