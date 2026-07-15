@@ -27,24 +27,41 @@
             margin: 0; 
             padding: 20px 10px; 
             display: flex; 
-            flex-direction: column; /* ปรับให้เรียงจากบนลงล่าง */
+            flex-direction: column;
             justify-content: center; 
             align-items: center; 
             min-height: 95vh; 
             transition: background-color 0.3s ease;
         }
 
-        /* แก้ไขจุดนี้: ปรับปุ่มให้อยู่ด้านนอกกล่อง ชิดขวา และไม่ลอย */
-        .theme-toggle-container {
+        .top-bar-container {
             width: 100%;
             max-width: 750px;
             display: flex;
-            justify-content: flex-end;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 15px;
             box-sizing: border-box;
             padding: 0 5px;
         }
         
+        .back-btn {
+            background: var(--toggle-btn-bg);
+            color: var(--toggle-btn-text);
+            border: 1px solid var(--toggle-btn-border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
         .theme-toggle-btn {
             background: var(--toggle-btn-bg);
             color: var(--toggle-btn-text);
@@ -160,7 +177,10 @@
 </head>
 <body>
 
-    <div class="theme-toggle-container">
+    <div class="top-bar-container">
+        <a href="https://yang8860.github.io/IoT-system-central/" class="back-btn">
+            ⬅️ ระบบหลัก
+        </a>
         <button class="theme-toggle-btn" id="themeBtn">
             <span id="themeIcon">☀️</span> <span id="themeTxt">โหมดสว่าง</span>
         </button>
